@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Book Admission — YWP Replica</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="replica-banner"><strong>REPLICA SITE</strong> — UX experiment sandbox.</div>
+
+<div class="top-strip">
+  <div class="container">
+    <span class="open-now">● Park open today: 9:45am – 5pm</span>
+    <span><a href="#">Accessibility</a> · <a href="#">School Trips</a> · <a href="#">Venue Hire</a></span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">Wildlife<span class="logo-badge">YWP</span></a>
+    <nav class="main-nav">
+      <a href="tickets.html">Tickets &amp; Passes</a>
+      <a href="#">Shop</a>
+      <a href="short-breaks.html">Short Breaks</a>
+      <a href="explore.html">Explore</a>
+      <a href="#">What's On</a>
+      <a href="plan.html">Plan</a>
+    </nav>
+    <a href="booking.html" class="btn btn-primary btn-sm active">Book Now</a>
+    <button class="mobile-toggle" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<div class="page-header">
+  <div class="container">
+    <h1>Admission</h1>
+    <p style="opacity:.9;">WILD adventures await…</p>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container">
+
+    <div class="progress-steps">
+      <div class="step active">Tickets</div>
+      <div class="step">Date &amp; Time</div>
+      <div class="step">Extras</div>
+      <div class="step">Basket</div>
+      <div class="step">Checkout</div>
+    </div>
+
+    <div class="booking-layout">
+
+      <div class="booking-main">
+        <h2 style="font-family:var(--font-body);font-size:1.3rem;margin-bottom:20px;">Select your tickets</h2>
+
+        <div class="ticket-row" data-id="adult" data-name="Adult (16+) Admission" data-price="21.50">
+          <div class="ticket-info">
+            <h4>Adult (16+) Admission</h4>
+            <div class="from">From £21.50</div>
+          </div>
+          <div class="qty-ctrl">
+            <button data-ticket-action="remove">−</button>
+            <span class="qty">0</span>
+            <button data-ticket-action="add">+</button>
+          </div>
+        </div>
+
+        <div class="ticket-row" data-id="concession" data-name="Concession (Senior 65+ / Student)" data-price="20.50">
+          <div class="ticket-info">
+            <h4>Concession (Senior 65+ / Student) Admission</h4>
+            <div class="from">From £20.50</div>
+            <div class="note">Student or NUS / TOTUM Card required.</div>
+          </div>
+          <div class="qty-ctrl">
+            <button data-ticket-action="remove">−</button>
+            <span class="qty">0</span>
+            <button data-ticket-action="add">+</button>
+          </div>
+        </div>
+
+        <div class="ticket-row" data-id="child" data-name="Child (3-15) Admission" data-price="17.50">
+          <div class="ticket-info">
+            <h4>Child (3–15) Admission</h4>
+            <div class="from">From £17.50</div>
+            <div class="note">Children under 16 must be accompanied by an adult at all times.</div>
+          </div>
+          <div class="qty-ctrl">
+            <button data-ticket-action="remove">−</button>
+            <span class="qty">0</span>
+            <button data-ticket-action="add">+</button>
+          </div>
+        </div>
+
+        <div class="ticket-row" data-id="under3" data-name="Under 3 Admission" data-price="0">
+          <div class="ticket-info">
+            <h4>Under 3 Admission</h4>
+            <div class="from">£0.00</div>
+          </div>
+          <div class="qty-ctrl">
+            <button data-ticket-action="remove">−</button>
+            <span class="qty">0</span>
+            <button data-ticket-action="add">+</button>
+          </div>
+        </div>
+
+        <div class="ticket-row" data-id="acc-adult" data-name="Accessible Adult (16+) Admission" data-price="13.50">
+          <div class="ticket-info">
+            <h4>Accessible Adult (16+) Admission</h4>
+            <div class="from">From £13.50</div>
+            <div class="note">Accessible visitors will be required to produce appropriate ID.</div>
+          </div>
+          <div class="qty-ctrl">
+            <button data-ticket-action="remove">−</button>
+            <span class="qty">0</span>
+            <button data-ticket-action="add">+</button>
+          </div>
+        </div>
+
+        <div class="ticket-row" data-id="acc-concession" data-name="Accessible Concession Admission" data-price="12.50">
+          <div class="ticket-info">
+            <h4>Accessible Concession (Senior 65+ / Student) Admission</h4>
+            <div class="from">From £12.50</div>
+          </div>
+          <div class="qty-ctrl">
+            <button data-ticket-action="remove">−</button>
+            <span class="qty">0</span>
+            <button data-ticket-action="add">+</button>
+          </div>
+        </div>
+
+        <div class="ticket-row" data-id="acc-child" data-name="Accessible Child (3-15) Admission" data-price="9.50">
+          <div class="ticket-info">
+            <h4>Accessible Child (3–15) Admission</h4>
+            <div class="from">From £9.50</div>
+          </div>
+          <div class="qty-ctrl">
+            <button data-ticket-action="remove">−</button>
+            <span class="qty">0</span>
+            <button data-ticket-action="add">+</button>
+          </div>
+        </div>
+
+        <div class="ticket-row" data-id="carer" data-name="Official Carer Admission" data-price="8.00">
+          <div class="ticket-info">
+            <h4>Official Carer Admission</h4>
+            <div class="from">£8.00</div>
+            <div class="note">A carer's ticket should only be selected when purchasing an Accessible ticket.</div>
+          </div>
+          <div class="qty-ctrl">
+            <button data-ticket-action="remove">−</button>
+            <span class="qty">0</span>
+            <button data-ticket-action="add">+</button>
+          </div>
+        </div>
+
+      </div>
+
+      <aside class="booking-aside">
+        <div class="basket-summary" id="basket-summary">
+          <h3>Your basket</h3>
+          <div class="empty">Your basket is empty.<br>Select tickets to get started.</div>
+        </div>
+      </aside>
+
+    </div>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="copyright">© 2026 Yorkshire Wildlife Park — <em>Replica site for UX testing only</em></div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
