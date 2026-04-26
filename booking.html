@@ -3,179 +3,605 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Book Admission — YWP Replica</title>
+<title>Book Your Visit — YWP Replica</title>
 <link rel="stylesheet" href="css/styles.css">
+<style>
+/* =========================================================
+   BOOKING FLOW v2 — 6-step journey per spec
+   ========================================================= */
+
+/* ---------- Progress stepper ---------- */
+.booking-progress { background: var(--ywp-cream); padding: 24px 0; border-bottom: 1px solid var(--ywp-border); }
+.stepper { display: flex; justify-content: space-between; position: relative; max-width: 800px; margin: 0 auto; }
+.stepper::before { content:''; position:absolute; top:20px; left:50px; right:50px; height:3px; background:var(--ywp-border); z-index:0; }
+.stepper::after { content:''; position:absolute; top:20px; left:50px; height:3px; background:var(--ywp-orange); z-index:1; transition:width 0.4s; width:var(--prog,0%); }
+.st { position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; gap:8px; }
+.st .st-num { width:40px; height:40px; border-radius:50%; background:#fff; border:3px solid var(--ywp-border); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem; color:var(--ywp-muted); transition:all 0.3s; }
+.st .st-label { font-size:0.75rem; font-weight:600; color:var(--ywp-muted); transition:color 0.3s; white-space:nowrap; }
+.st.active .st-num { background:var(--ywp-green-700); border-color:var(--ywp-green-700); color:#fff; }
+.st.active .st-label { color:var(--ywp-green-800); }
+.st.done .st-num { background:var(--ywp-orange); border-color:var(--ywp-orange); color:#fff; }
+.st.done .st-label { color:var(--ywp-orange-dk); }
+
+/* ---------- Layout ---------- */
+.bk-wrap { padding: 40px 0 80px; }
+.bk-grid { display:grid; grid-template-columns:1fr 370px; gap:36px; align-items:start; }
+.bk-panel { background:#fff; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:36px; }
+.bk-panel h2 { font-family:var(--font-body); font-size:1.35rem; font-weight:700; margin-bottom:6px; color:var(--ywp-green-900); }
+.bk-panel .sub { color:var(--ywp-muted); font-size:0.92rem; margin-bottom:28px; }
+.sp { display:none; }
+.sp.vis { display:block; }
+
+/* ---------- Step nav ---------- */
+.snav { display:flex; justify-content:space-between; margin-top:30px; padding-top:20px; border-top:1px solid var(--ywp-border); }
+.snav .bk-back { background:none; border:2px solid var(--ywp-border); color:var(--ywp-muted); padding:12px 24px; border-radius:999px; font-weight:700; font-family:var(--font-body); font-size:0.92rem; cursor:pointer; transition:all 0.15s; }
+.snav .bk-back:hover { border-color:var(--ywp-green-700); color:var(--ywp-green-700); }
+.snav .skip-link { align-self:center; font-size:0.88rem; color:var(--ywp-muted); }
+.snav .skip-link a { color:var(--ywp-green-700); font-weight:600; }
+
+/* ---------- STEP 1: Date & Time ---------- */
+.dt-layout { display:grid; grid-template-columns:1fr 240px; gap:30px; }
+.cal-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.cal-head h3 { font-family:var(--font-body); font-size:1.1rem; color:var(--ywp-text); margin:0; }
+.cal-arrows { display:flex; gap:6px; }
+.cal-arrows button { width:34px; height:34px; border-radius:50%; border:2px solid var(--ywp-border); background:#fff; cursor:pointer; font-size:1rem; color:var(--ywp-green-800); transition:all 0.15s; }
+.cal-arrows button:hover { background:var(--ywp-green-700); color:#fff; border-color:var(--ywp-green-700); }
+.cg { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+.cg .cdl { text-align:center; font-size:0.72rem; font-weight:700; color:var(--ywp-muted); padding:8px 0; text-transform:uppercase; }
+.cg .cd { text-align:center; padding:8px 2px; border-radius:var(--radius-sm); cursor:pointer; border:2px solid transparent; transition:all 0.15s; position:relative; }
+.cg .cd:hover { background:var(--ywp-cream); }
+.cg .cd.sel { background:var(--ywp-green-700); color:#fff; border-color:var(--ywp-green-700); }
+.cg .cd .cdn { font-weight:700; font-size:0.88rem; display:block; }
+.cg .cd .cdp { font-size:0.68rem; color:var(--ywp-muted); display:block; margin-top:1px; }
+.cg .cd.sel .cdp { color:rgba(255,255,255,0.8); }
+.cg .cd.empty { cursor:default; }
+.cg .cd.empty:hover { background:none; }
+.cg .cd .cev { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--ywp-orange); position:absolute; top:4px; right:4px; }
+.cal-legend { display:flex; gap:16px; margin-top:14px; padding-top:14px; border-top:1px solid var(--ywp-border); font-size:0.78rem; color:var(--ywp-muted); }
+.cal-legend span { display:flex; align-items:center; gap:5px; }
+.cal-legend .ldot { width:9px; height:9px; border-radius:50%; display:inline-block; }
+.ldot.off { background:var(--ywp-green-500); }
+.ldot.peak { background:#e74c3c; }
+.ldot.ev { background:var(--ywp-orange); }
+
+/* Time selector */
+.time-panel h3 { font-family:var(--font-body); font-size:1rem; color:var(--ywp-text); margin-bottom:14px; }
+.time-slots { display:flex; flex-direction:column; gap:8px; }
+.ts { padding:14px 16px; border:2px solid var(--ywp-border); border-radius:var(--radius-sm); cursor:pointer; font-weight:600; font-size:0.92rem; color:var(--ywp-text); text-align:center; transition:all 0.15s; }
+.ts:hover { border-color:var(--ywp-green-600); background:var(--ywp-cream); }
+.ts.sel { border-color:var(--ywp-green-700); background:var(--ywp-green-700); color:#fff; }
+
+.date-summary { background:var(--ywp-cream); border-radius:var(--radius-md); padding:16px 20px; margin-top:20px; display:none; }
+.date-summary.vis { display:block; }
+.date-summary h4 { font-family:var(--font-body); font-size:0.95rem; margin-bottom:4px; color:var(--ywp-green-800); }
+.date-summary p { font-size:0.88rem; color:var(--ywp-muted); }
+
+/* ---------- STEP 2: Tickets ---------- */
+.acc-toggle { display:flex; align-items:center; justify-content:space-between; background:var(--ywp-cream); border-radius:var(--radius-md); padding:14px 20px; margin-bottom:24px; }
+.acc-toggle span { font-weight:700; font-size:0.92rem; color:var(--ywp-text); }
+.toggle-sw { position:relative; width:50px; height:28px; cursor:pointer; }
+.toggle-sw input { opacity:0; width:0; height:0; }
+.toggle-sw .slider { position:absolute; inset:0; background:var(--ywp-border); border-radius:14px; transition:0.3s; }
+.toggle-sw .slider::before { content:''; position:absolute; width:22px; height:22px; border-radius:50%; background:#fff; left:3px; top:3px; transition:0.3s; }
+.toggle-sw input:checked + .slider { background:var(--ywp-green-700); }
+.toggle-sw input:checked + .slider::before { transform:translateX(22px); }
+
+.tg-label { font-weight:700; font-size:0.82rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--ywp-green-700); margin:24px 0 10px; padding-bottom:8px; border-bottom:2px solid var(--ywp-cream); }
+.tg-label:first-of-type { margin-top:0; }
+
+.tr { display:grid; grid-template-columns:1fr auto auto; gap:14px; padding:14px 0; border-bottom:1px solid var(--ywp-border); align-items:center; }
+.tr:last-child { border-bottom:none; }
+.tr .tn { font-weight:700; font-size:0.92rem; color:var(--ywp-text); }
+.tr .td { font-size:0.8rem; color:var(--ywp-muted); margin-top:2px; }
+.tr .tp { font-weight:700; font-size:0.95rem; color:var(--ywp-green-800); white-space:nowrap; }
+.qc { display:flex; align-items:center; gap:6px; }
+.qc button { width:34px; height:34px; border-radius:50%; border:none; background:var(--ywp-green-700); color:#fff; font-size:1.1rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.15s; }
+.qc button:hover { background:var(--ywp-green-800); }
+.qc .qv { width:34px; text-align:center; font-weight:700; font-size:1rem; }
+
+.acc-group { display:none; }
+.acc-group.vis { display:block; }
+
+/* ---------- STEP 3 & 4: Cards (Equipment / Enhancements) ---------- */
+.card-step-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.cat-label { font-weight:700; font-size:0.88rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--ywp-green-700); margin:30px 0 16px; }
+.cat-label:first-of-type { margin-top:0; }
+.pcard { background:#fff; border:2px solid var(--ywp-border); border-radius:var(--radius-lg); overflow:hidden; display:flex; flex-direction:column; transition:border-color 0.15s, transform 0.15s; }
+.pcard:hover { border-color:var(--ywp-green-600); transform:translateY(-2px); }
+.pcard.added { border-color:var(--ywp-orange); }
+.pcard-img { height:160px; background-size:cover; background-position:center; }
+.pcard-body { padding:20px; flex:1; display:flex; flex-direction:column; }
+.pcard-body h4 { font-family:var(--font-body); font-weight:700; font-size:1rem; color:var(--ywp-text); margin-bottom:6px; }
+.pcard-body p { font-size:0.85rem; color:var(--ywp-muted); line-height:1.4; margin-bottom:12px; flex:1; }
+.pcard-price { font-weight:700; font-size:1.05rem; color:var(--ywp-orange); margin-bottom:14px; }
+.pcard-qty { display:flex; align-items:center; gap:8px; }
+.pcard-qty button { width:34px; height:34px; border-radius:50%; border:none; background:var(--ywp-green-700); color:#fff; font-size:1.1rem; font-weight:700; cursor:pointer; }
+.pcard-qty button:hover { background:var(--ywp-green-800); }
+.pcard-qty .pqv { min-width:30px; text-align:center; font-weight:700; font-size:1rem; }
+
+/* ---------- STEP 5: Review ---------- */
+.rv-section { background:var(--ywp-cream); border-radius:var(--radius-md); padding:22px; margin-bottom:20px; }
+.rv-section h4 { font-family:var(--font-body); font-weight:700; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--ywp-green-700); margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; }
+.rv-section h4 a { font-size:0.78rem; color:var(--ywp-orange); text-transform:none; letter-spacing:0; }
+.rv-line { display:flex; justify-content:space-between; padding:7px 0; font-size:0.92rem; border-bottom:1px solid rgba(0,0,0,0.06); }
+.rv-line:last-child { border-bottom:none; }
+.rv-line .rvl { color:var(--ywp-text); }
+.rv-line .rvv { font-weight:700; color:var(--ywp-green-800); }
+.rv-total { display:flex; justify-content:space-between; padding:18px 0 0; margin-top:10px; border-top:3px solid var(--ywp-green-700); font-size:1.2rem; font-weight:700; color:var(--ywp-green-800); }
+.promo-row { display:flex; gap:10px; margin-top:16px; }
+.promo-row input { flex:1; padding:10px 14px; border:2px solid var(--ywp-border); border-radius:var(--radius-sm); font-family:var(--font-body); font-size:0.92rem; }
+.promo-row input:focus { outline:none; border-color:var(--ywp-green-600); }
+
+/* ---------- STEP 6: Checkout ---------- */
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.form-row.full { grid-template-columns:1fr; }
+.ff label { display:block; font-size:0.78rem; font-weight:700; color:var(--ywp-muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+.ff input, .ff select { width:100%; padding:12px 14px; border:2px solid var(--ywp-border); border-radius:var(--radius-sm); font-family:var(--font-body); font-size:0.92rem; }
+.ff input:focus, .ff select:focus { outline:none; border-color:var(--ywp-green-600); }
+.don-box { background:var(--ywp-cream); border-radius:var(--radius-md); padding:16px 20px; margin:24px 0; display:flex; gap:12px; align-items:flex-start; }
+.don-box input[type="checkbox"] { margin-top:3px; width:18px; height:18px; accent-color:var(--ywp-green-700); }
+.don-box label { font-size:0.9rem; color:var(--ywp-text); cursor:pointer; }
+
+/* ---------- Sidebar basket ---------- */
+.sb { position:sticky; top:90px; }
+.sbc { background:#fff; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; }
+.sb-hd { background:var(--ywp-green-800); color:#fff; padding:16px 22px; font-weight:700; font-size:0.95rem; }
+.sb-bd { padding:18px 22px; }
+.sb-empty { text-align:center; padding:24px 0; color:var(--ywp-muted); font-size:0.88rem; }
+.sb-ln { display:flex; justify-content:space-between; padding:7px 0; font-size:0.88rem; border-bottom:1px solid var(--ywp-border); }
+.sb-ln:last-of-type { border-bottom:none; }
+.sb-ln .sbi { color:var(--ywp-text); }
+.sb-ln .sba { font-weight:700; color:var(--ywp-green-800); }
+.sb-disc { display:flex; justify-content:space-between; padding:7px 0; font-size:0.85rem; color:var(--ywp-orange); font-weight:600; }
+.sb-tot { display:flex; justify-content:space-between; padding:14px 0 0; margin-top:8px; border-top:3px solid var(--ywp-green-700); font-weight:700; font-size:1.1rem; color:var(--ywp-green-800); }
+.sb-ft { padding:0 22px 22px; }
+.sb-ft .btn { width:100%; text-align:center; }
+.sb-note { text-align:center; font-size:0.75rem; color:var(--ywp-muted); margin-top:8px; }
+.sb-re { padding:14px 22px; background:var(--ywp-cream); border-top:1px solid var(--ywp-border); }
+.sb-re p { font-size:0.78rem; color:var(--ywp-muted); margin-bottom:3px; }
+.sb-re p:last-child { margin-bottom:0; }
+
+/* ---------- Responsive ---------- */
+@media (max-width:900px) {
+  .bk-grid { grid-template-columns:1fr; }
+  .sb { position:static; }
+  .dt-layout { grid-template-columns:1fr; }
+  .card-step-grid { grid-template-columns:repeat(2,1fr); }
+  .form-row { grid-template-columns:1fr; }
+}
+@media (max-width:600px) {
+  .stepper { gap:2px; }
+  .st .st-label { font-size:0.65rem; }
+  .card-step-grid { grid-template-columns:1fr; }
+}
+</style>
 </head>
 <body>
 
-<div class="replica-banner"><strong>REPLICA SITE</strong> — UX experiment sandbox.</div>
+<div class="replica-banner"><strong>REPLICA</strong> — Redesigned 6-step booking flow.</div>
+<div class="top-strip"><div class="container"><span class="open-now">● Open today: 9:45am – 5pm · Last entry 3pm</span><span><a href="#">Accessibility</a> · <a href="#">School Trips</a> · <a href="#">Venue Hire</a></span></div></div>
+<header class="site-header"><div class="container">
+  <a href="index.html" class="logo"><img src="https://www.yorkshirewildlifepark.com/media/x43p1ox4/ywp-primary-logo.svg" alt="YWP" class="logo-img"></a>
+  <nav class="main-nav" id="main-nav"><a href="explore.html">Explore the Park</a><a href="tickets.html">Prices</a><a href="short-breaks.html">Stay With Us</a><a href="#">What's On</a><a href="plan.html">Plan Your Visit</a></nav>
+  <a href="booking.html" class="btn btn-primary btn-sm">Book Now</a>
+  <button class="mobile-toggle" aria-label="Menu" onclick="document.getElementById('main-nav').classList.toggle('open')">☰</button>
+</div></header>
 
-<div class="top-strip">
-  <div class="container">
-    <span class="open-now">● Park open today: 9:45am – 5pm</span>
-    <span><a href="#">Accessibility</a> · <a href="#">School Trips</a> · <a href="#">Venue Hire</a></span>
+<!-- Stepper -->
+<div class="booking-progress"><div class="container">
+  <div class="stepper" id="stepper" style="--prog:0%;">
+    <div class="st active" data-s="1"><span class="st-num">1</span><span class="st-label">Date &amp; Time</span></div>
+    <div class="st" data-s="2"><span class="st-num">2</span><span class="st-label">Tickets</span></div>
+    <div class="st" data-s="3"><span class="st-num">3</span><span class="st-label">Equipment</span></div>
+    <div class="st" data-s="4"><span class="st-num">4</span><span class="st-label">Enhancements</span></div>
+    <div class="st" data-s="5"><span class="st-num">5</span><span class="st-label">Review Basket</span></div>
+    <div class="st" data-s="6"><span class="st-num">6</span><span class="st-label">Checkout</span></div>
   </div>
-</div>
+</div></div>
 
-<header class="site-header">
-  <div class="container">
-    <a href="index.html" class="logo">Wildlife<span class="logo-badge">YWP</span></a>
-    <nav class="main-nav">
-      <a href="tickets.html">Tickets &amp; Passes</a>
-      <a href="#">Shop</a>
-      <a href="short-breaks.html">Short Breaks</a>
-      <a href="explore.html">Explore</a>
-      <a href="#">What's On</a>
-      <a href="plan.html">Plan</a>
-    </nav>
-    <a href="booking.html" class="btn btn-primary btn-sm active">Book Now</a>
-    <button class="mobile-toggle" aria-label="Menu">☰</button>
-  </div>
-</header>
+<div class="bk-wrap"><div class="container"><div class="bk-grid">
 
-<div class="page-header">
-  <div class="container">
-    <h1>Admission</h1>
-    <p style="opacity:.9;">WILD adventures await…</p>
-  </div>
-</div>
+<!-- ===================== MAIN ===================== -->
+<div id="mainCol">
 
-<section class="content">
-  <div class="container">
-
-    <div class="progress-steps">
-      <div class="step active">Tickets</div>
-      <div class="step">Date &amp; Time</div>
-      <div class="step">Extras</div>
-      <div class="step">Basket</div>
-      <div class="step">Checkout</div>
-    </div>
-
-    <div class="booking-layout">
-
-      <div class="booking-main">
-        <h2 style="font-family:var(--font-body);font-size:1.3rem;margin-bottom:20px;">Select your tickets</h2>
-
-        <div class="ticket-row" data-id="adult" data-name="Adult (16+) Admission" data-price="21.50">
-          <div class="ticket-info">
-            <h4>Adult (16+) Admission</h4>
-            <div class="from">From £21.50</div>
-          </div>
-          <div class="qty-ctrl">
-            <button data-ticket-action="remove">−</button>
-            <span class="qty">0</span>
-            <button data-ticket-action="add">+</button>
-          </div>
-        </div>
-
-        <div class="ticket-row" data-id="concession" data-name="Concession (Senior 65+ / Student)" data-price="20.50">
-          <div class="ticket-info">
-            <h4>Concession (Senior 65+ / Student) Admission</h4>
-            <div class="from">From £20.50</div>
-            <div class="note">Student or NUS / TOTUM Card required.</div>
-          </div>
-          <div class="qty-ctrl">
-            <button data-ticket-action="remove">−</button>
-            <span class="qty">0</span>
-            <button data-ticket-action="add">+</button>
-          </div>
-        </div>
-
-        <div class="ticket-row" data-id="child" data-name="Child (3-15) Admission" data-price="17.50">
-          <div class="ticket-info">
-            <h4>Child (3–15) Admission</h4>
-            <div class="from">From £17.50</div>
-            <div class="note">Children under 16 must be accompanied by an adult at all times.</div>
-          </div>
-          <div class="qty-ctrl">
-            <button data-ticket-action="remove">−</button>
-            <span class="qty">0</span>
-            <button data-ticket-action="add">+</button>
-          </div>
-        </div>
-
-        <div class="ticket-row" data-id="under3" data-name="Under 3 Admission" data-price="0">
-          <div class="ticket-info">
-            <h4>Under 3 Admission</h4>
-            <div class="from">£0.00</div>
-          </div>
-          <div class="qty-ctrl">
-            <button data-ticket-action="remove">−</button>
-            <span class="qty">0</span>
-            <button data-ticket-action="add">+</button>
-          </div>
-        </div>
-
-        <div class="ticket-row" data-id="acc-adult" data-name="Accessible Adult (16+) Admission" data-price="13.50">
-          <div class="ticket-info">
-            <h4>Accessible Adult (16+) Admission</h4>
-            <div class="from">From £13.50</div>
-            <div class="note">Accessible visitors will be required to produce appropriate ID.</div>
-          </div>
-          <div class="qty-ctrl">
-            <button data-ticket-action="remove">−</button>
-            <span class="qty">0</span>
-            <button data-ticket-action="add">+</button>
-          </div>
-        </div>
-
-        <div class="ticket-row" data-id="acc-concession" data-name="Accessible Concession Admission" data-price="12.50">
-          <div class="ticket-info">
-            <h4>Accessible Concession (Senior 65+ / Student) Admission</h4>
-            <div class="from">From £12.50</div>
-          </div>
-          <div class="qty-ctrl">
-            <button data-ticket-action="remove">−</button>
-            <span class="qty">0</span>
-            <button data-ticket-action="add">+</button>
-          </div>
-        </div>
-
-        <div class="ticket-row" data-id="acc-child" data-name="Accessible Child (3-15) Admission" data-price="9.50">
-          <div class="ticket-info">
-            <h4>Accessible Child (3–15) Admission</h4>
-            <div class="from">From £9.50</div>
-          </div>
-          <div class="qty-ctrl">
-            <button data-ticket-action="remove">−</button>
-            <span class="qty">0</span>
-            <button data-ticket-action="add">+</button>
-          </div>
-        </div>
-
-        <div class="ticket-row" data-id="carer" data-name="Official Carer Admission" data-price="8.00">
-          <div class="ticket-info">
-            <h4>Official Carer Admission</h4>
-            <div class="from">£8.00</div>
-            <div class="note">A carer's ticket should only be selected when purchasing an Accessible ticket.</div>
-          </div>
-          <div class="qty-ctrl">
-            <button data-ticket-action="remove">−</button>
-            <span class="qty">0</span>
-            <button data-ticket-action="add">+</button>
-          </div>
-        </div>
-
+<!-- STEP 1 -->
+<div class="bk-panel sp vis" id="s1">
+  <h2>When would you like to visit?</h2>
+  <p class="sub">Select your preferred date and arrival time slot. Prices may vary by day.</p>
+  <div class="dt-layout">
+    <div>
+      <div class="cal-head"><button class="cal-arrows" onclick="cM(-1)">‹</button><h3 id="cMo"></h3><button class="cal-arrows" onclick="cM(1)">›</button></div>
+      <div class="cg" id="cG"></div>
+      <div class="cal-legend">
+        <span><span class="ldot off"></span> Off-peak</span>
+        <span><span class="ldot peak"></span> Peak</span>
+        <span><span class="ldot ev"></span> Event day</span>
       </div>
-
-      <aside class="booking-aside">
-        <div class="basket-summary" id="basket-summary">
-          <h3>Your basket</h3>
-          <div class="empty">Your basket is empty.<br>Select tickets to get started.</div>
-        </div>
-      </aside>
-
     </div>
-
+    <div class="time-panel">
+      <h3>Select a time</h3>
+      <div class="time-slots" id="tSlots">
+        <div class="ts" onclick="selTime(this,'09:45')">09:45 AM</div>
+        <div class="ts" onclick="selTime(this,'10:00')">10:00 AM</div>
+        <div class="ts" onclick="selTime(this,'10:30')">10:30 AM</div>
+        <div class="ts" onclick="selTime(this,'11:00')">11:00 AM</div>
+        <div class="ts" onclick="selTime(this,'11:30')">11:30 AM</div>
+        <div class="ts" onclick="selTime(this,'12:00')">12:00 PM</div>
+      </div>
+    </div>
   </div>
-</section>
+  <div class="date-summary" id="dSum"><h4 id="dSumT"></h4><p id="dSumD"></p></div>
+  <div class="snav"><div></div><button class="btn btn-primary" id="s1n" disabled onclick="go(2)">Continue to Tickets →</button></div>
+</div>
 
-<footer class="site-footer">
-  <div class="container">
-    <div class="copyright">© 2026 Yorkshire Wildlife Park — <em>Replica site for UX testing only</em></div>
+<!-- STEP 2 -->
+<div class="bk-panel sp" id="s2">
+  <h2>Select your tickets</h2>
+  <p class="sub">Prices shown for your selected date. Book online and save £3.50pp.</p>
+  <div class="acc-toggle"><span>Show Accessible Tickets</span><label class="toggle-sw"><input type="checkbox" id="accTog" onchange="togAcc()"><span class="slider"></span></label></div>
+
+  <div class="tg-label">Standard Tickets</div>
+  <div class="tr"><div><div class="tn">Adult Admission</div><div class="td">Ages 16+</div></div><div class="tp">£21.50</div><div class="qc"><button onclick="adj('adult',-1)">−</button><span class="qv" id="q-adult">0</span><button onclick="adj('adult',1)">+</button></div></div>
+  <div class="tr"><div><div class="tn">Concession Admission</div><div class="td">Senior 65+ or Student (NUS / TOTUM required)</div></div><div class="tp">£20.50</div><div class="qc"><button onclick="adj('conc',-1)">−</button><span class="qv" id="q-conc">0</span><button onclick="adj('conc',1)">+</button></div></div>
+  <div class="tr"><div><div class="tn">Child Admission</div><div class="td">Ages 3–15. Must be accompanied by an adult.</div></div><div class="tp">£17.50</div><div class="qc"><button onclick="adj('child',-1)">−</button><span class="qv" id="q-child">0</span><button onclick="adj('child',1)">+</button></div></div>
+  <div class="tr"><div><div class="tn">Under 3 Admission</div><div class="td">Free entry.</div></div><div class="tp">Free</div><div class="qc"><button onclick="adj('u3',-1)">−</button><span class="qv" id="q-u3">0</span><button onclick="adj('u3',1)">+</button></div></div>
+
+  <div class="acc-group" id="accGrp">
+    <div class="tg-label">Accessible Tickets</div>
+    <div class="tr"><div><div class="tn">Accessible Adult</div><div class="td">Ages 16+. Blue Badge, DLA, PIP or similar required.</div></div><div class="tp">£13.50</div><div class="qc"><button onclick="adj('aa',-1)">−</button><span class="qv" id="q-aa">0</span><button onclick="adj('aa',1)">+</button></div></div>
+    <div class="tr"><div><div class="tn">Accessible Child</div><div class="td">Ages 3–15. ID required.</div></div><div class="tp">£9.50</div><div class="qc"><button onclick="adj('ac',-1)">−</button><span class="qv" id="q-ac">0</span><button onclick="adj('ac',1)">+</button></div></div>
+    <div class="tr"><div><div class="tn">Accessible Concession</div><div class="td">Senior 65+ or Student. ID required.</div></div><div class="tp">£12.50</div><div class="qc"><button onclick="adj('acon',-1)">−</button><span class="qv" id="q-acon">0</span><button onclick="adj('acon',1)">+</button></div></div>
+    <div class="tr"><div><div class="tn">Official Carer</div><div class="td">One per accessible ticket holder.</div></div><div class="tp">£8.00</div><div class="qc"><button onclick="adj('carer',-1)">−</button><span class="qv" id="q-carer">0</span><button onclick="adj('carer',1)">+</button></div></div>
   </div>
-</footer>
 
-<script src="js/main.js"></script>
+  <div class="snav"><button class="bk-back" onclick="go(1)">← Back</button><button class="btn btn-primary" id="s2n" disabled onclick="go(3)">Continue to Equipment →</button></div>
+</div>
+
+<!-- STEP 3 -->
+<div class="bk-panel sp" id="s3">
+  <h2>Equipment Hire</h2>
+  <p class="sub">Need any support equipment for your visit? These are practical essentials — skip if not needed.</p>
+  <div class="card-step-grid" id="equipGrid">
+    <div class="pcard" data-eid="wheelchair">
+      <div class="pcard-img" style="background-image:url('https://www.yorkshirewildlifepark.com/media/0xfhej5p/ben-harrison-photography-www-benharrisonphotography-co-uk-53.jpg');"></div>
+      <div class="pcard-body">
+        <h4>Wheelchair Hire</h4>
+        <p>Free wheelchair hire. Available from Guest Services when you check in.</p>
+        <div class="pcard-price">Free</div>
+        <div class="pcard-qty"><button onclick="adjE('wheelchair',-1)">−</button><span class="pqv" id="eq-wheelchair">0</span><button onclick="adjE('wheelchair',1)">+</button></div>
+      </div>
+    </div>
+    <div class="pcard" data-eid="pushchair">
+      <div class="pcard-img" style="background-image:url('https://www.yorkshirewildlifepark.com/media/px0isaks/oasis-adventure-play-zip-wire.jpg');"></div>
+      <div class="pcard-body">
+        <h4>Single Pushchair Hire</h4>
+        <p>Perfect for younger guests. Available from 9:45am for the entire day.</p>
+        <div class="pcard-price">£10.00</div>
+        <div class="pcard-qty"><button onclick="adjE('pushchair',-1)">−</button><span class="pqv" id="eq-pushchair">0</span><button onclick="adjE('pushchair',1)">+</button></div>
+      </div>
+    </div>
+    <div class="pcard" data-eid="scooter">
+      <div class="pcard-img" style="background-image:url('https://www.yorkshirewildlifepark.com/media/s0nf1svi/better-vista.jpg');"></div>
+      <div class="pcard-body">
+        <h4>Mobility Scooter Hire</h4>
+        <p>Full day hire from 9:45am. £50 refundable deposit required on the day.</p>
+        <div class="pcard-price">£20.00</div>
+        <div class="pcard-qty"><button onclick="adjE('scooter',-1)">−</button><span class="pqv" id="eq-scooter">0</span><button onclick="adjE('scooter',1)">+</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="snav"><button class="bk-back" onclick="go(2)">← Back</button><span class="skip-link"><a href="#" onclick="go(4);return false">Skip this step</a></span><button class="btn btn-primary" onclick="go(4)">Continue to Enhancements →</button></div>
+</div>
+
+<!-- STEP 4 -->
+<div class="bk-panel sp" id="s4">
+  <h2>Enhance Your Visit</h2>
+  <p class="sub">Add extras to make your day even more memorable. All optional — skip if you prefer.</p>
+
+  <div class="cat-label">🍔 Food &amp; Drink</div>
+  <div class="card-step-grid">
+    <div class="pcard" data-eid="refill"><div class="pcard-img" style="background:linear-gradient(135deg,var(--ywp-green-700),var(--ywp-green-500));"></div><div class="pcard-body"><h4>Unlimited Refill Cup</h4><p>Unlimited soft drink refills all day at any park café.</p><div class="pcard-price">£5.00</div><div class="pcard-qty"><button onclick="adjN('refill',-1)">−</button><span class="pqv" id="en-refill">0</span><button onclick="adjN('refill',1)">+</button></div></div></div>
+    <div class="pcard" data-eid="breakfast"><div class="pcard-img" style="background:linear-gradient(135deg,var(--ywp-orange),var(--ywp-orange-dk));"></div><div class="pcard-body"><h4>Breakfast Voucher</h4><p>Start your day with a full breakfast at The Yorkshire Hive restaurant.</p><div class="pcard-price">£9.50</div><div class="pcard-qty"><button onclick="adjN('breakfast',-1)">−</button><span class="pqv" id="en-breakfast">0</span><button onclick="adjN('breakfast',1)">+</button></div></div></div>
+    <div class="pcard" data-eid="lunch"><div class="pcard-img" style="background:linear-gradient(135deg,var(--ywp-green-800),var(--ywp-green-600));"></div><div class="pcard-body"><h4>Lunch Meal Deal</h4><p>Main, side and a drink at any participating park restaurant.</p><div class="pcard-price">£12.00</div><div class="pcard-qty"><button onclick="adjN('lunch',-1)">−</button><span class="pqv" id="en-lunch">0</span><button onclick="adjN('lunch',1)">+</button></div></div></div>
+  </div>
+
+  <div class="cat-label">🐾 Experiences</div>
+  <div class="card-step-grid">
+    <div class="pcard" data-eid="giraffe"><div class="pcard-img" style="background-image:url('https://www.yorkshirewildlifepark.com/media/tj0fab3y/ywp-images-3207.jpg');"></div><div class="pcard-body"><h4>Giraffe Experience</h4><p>Hand-feed our giraffes. 60 mins. Ages 8+. Park admission included.</p><div class="pcard-price">£175.00 (2 people)</div><div class="pcard-qty"><button onclick="adjN('giraffe',-1)">−</button><span class="pqv" id="en-giraffe">0</span><button onclick="adjN('giraffe',1)">+</button></div></div></div>
+    <div class="pcard" data-eid="lemur"><div class="pcard-img" style="background-image:url('https://www.yorkshirewildlifepark.com/media/sk4m4h0y/img_6288.jpg');"></div><div class="pcard-body"><h4>Lemur Experience</h4><p>Step inside the enclosure. 30 mins. Ages 4+. Park admission included.</p><div class="pcard-price">£65.00 (2 people)</div><div class="pcard-qty"><button onclick="adjN('lemur',-1)">−</button><span class="pqv" id="en-lemur">0</span><button onclick="adjN('lemur',1)">+</button></div></div></div>
+    <div class="pcard" data-eid="polarbear"><div class="pcard-img" style="background-image:url('https://www.yorkshirewildlifepark.com/media/lvnplfl2/2025-project-polar-dr-ywp-20.jpg');"></div><div class="pcard-body"><h4>Polar Bear Experience</h4><p>Once-in-a-lifetime. 90 mins. Ages 16+. Park admission included.</p><div class="pcard-price">£450.00 (2 people)</div><div class="pcard-qty"><button onclick="adjN('polarbear',-1)">−</button><span class="pqv" id="en-polarbear">0</span><button onclick="adjN('polarbear',1)">+</button></div></div></div>
+  </div>
+
+  <div class="cat-label">🎯 Activities</div>
+  <div class="card-step-grid">
+    <div class="pcard" data-eid="play"><div class="pcard-img" style="background:linear-gradient(135deg,#f7c948,#d9640a);"></div><div class="pcard-body"><h4>Uproar Play Centre</h4><p>Unlimited indoor play session. Perfect for ages 2–12.</p><div class="pcard-price">£6.50</div><div class="pcard-qty"><button onclick="adjN('play',-1)">−</button><span class="pqv" id="en-play">0</span><button onclick="adjN('play',1)">+</button></div></div></div>
+    <div class="pcard" data-eid="golf"><div class="pcard-img" style="background:linear-gradient(135deg,var(--ywp-green-600),var(--ywp-green-900));"></div><div class="pcard-body"><h4>Adventure Golf</h4><p>18-hole safari-themed course for all ages.</p><div class="pcard-price">£5.00</div><div class="pcard-qty"><button onclick="adjN('golf',-1)">−</button><span class="pqv" id="en-golf">0</span><button onclick="adjN('golf',1)">+</button></div></div></div>
+  </div>
+
+  <div class="cat-label">📸 Photography</div>
+  <div class="card-step-grid">
+    <div class="pcard" data-eid="photo"><div class="pcard-img" style="background:linear-gradient(135deg,#6b4c9a,#9b59b6);"></div><div class="pcard-body"><h4>Premium Photo Package</h4><p>All your professional photos from the day. Digital download.</p><div class="pcard-price">£15.00</div><div class="pcard-qty"><button onclick="adjN('photo',-1)">−</button><span class="pqv" id="en-photo">0</span><button onclick="adjN('photo',1)">+</button></div></div></div>
+  </div>
+
+  <div class="snav"><button class="bk-back" onclick="go(3)">← Back</button><span class="skip-link"><a href="#" onclick="go(5);return false">Skip this step</a></span><button class="btn btn-primary" onclick="go(5)">Continue to Review →</button></div>
+</div>
+
+<!-- STEP 5 -->
+<div class="bk-panel sp" id="s5">
+  <h2>Review Your Basket</h2>
+  <p class="sub">Check everything looks right before payment.</p>
+  <div id="reviewContent"></div>
+  <div class="promo-row"><input type="text" placeholder="Promo code or voucher"><button class="btn btn-secondary btn-sm">Apply</button></div>
+  <div class="snav"><button class="bk-back" onclick="go(4)">← Back</button><button class="btn btn-primary" onclick="go(6)">Continue to Payment →</button></div>
+</div>
+
+<!-- STEP 6 -->
+<div class="bk-panel sp" id="s6">
+  <h2>Checkout</h2>
+  <p class="sub">Enter your details to complete your booking.</p>
+  <div class="form-row"><div class="ff"><label>First Name</label><input type="text" placeholder="Alex"></div><div class="ff"><label>Last Name</label><input type="text" placeholder="Proven"></div></div>
+  <div class="form-row"><div class="ff"><label>Email Address</label><input type="email" placeholder="you@example.com"></div><div class="ff"><label>Phone Number</label><input type="tel" placeholder="07700 000000"></div></div>
+  <div class="form-row full"><div class="ff"><label>Billing Address</label><input type="text" placeholder="Address line 1"></div></div>
+  <div class="form-row"><div class="ff"><label>City</label><input type="text"></div><div class="ff"><label>Postcode</label><input type="text"></div></div>
+  <div class="form-row full"><div class="ff"><label>Payment Method</label><select><option>Credit / Debit Card</option><option>Apple Pay</option><option>Google Pay</option></select></div></div>
+  <div class="don-box"><input type="checkbox" id="don"><label for="don">Round up my total to donate to the <strong>Wildlife Foundation</strong>. Every penny helps protect endangered species.</label></div>
+  <div class="snav"><button class="bk-back" onclick="go(5)">← Back</button><button class="btn btn-primary btn-lg">Complete Booking →</button></div>
+</div>
+
+</div>
+
+<!-- ===================== SIDEBAR ===================== -->
+<aside class="sb">
+  <div class="sbc">
+    <div class="sb-hd">🛒 Your Basket</div>
+    <div class="sb-bd" id="sbBd"><div class="sb-empty">Your basket is empty.<br>Start by choosing a date.</div></div>
+    <div class="sb-ft" id="sbFt" style="display:none;"><button class="btn btn-primary" id="sbBtn" onclick="goNext()">Continue →</button><div class="sb-note">Book online &amp; save £3.50pp</div></div>
+    <div class="sb-re"><p>🅿️ Free parking included</p><p>🔒 Secure checkout</p><p>↩️ Non-refundable after booking</p></div>
+  </div>
+</aside>
+
+</div></div></div>
+
+<footer class="site-footer"><div class="container"><div class="copyright">© 2026 Yorkshire Wildlife Park — <em>Replica for UX testing</em></div></div></footer>
+
+<script>
+// =========================================================
+// BOOKING STATE
+// =========================================================
+const B = {
+  date: null, time: null,
+  tickets: { adult:0, conc:0, child:0, u3:0, aa:0, ac:0, acon:0, carer:0 },
+  equipment: { wheelchair:0, pushchair:0, scooter:0 },
+  enhancements: { refill:0, breakfast:0, lunch:0, giraffe:0, lemur:0, polarbear:0, play:0, golf:0, photo:0 },
+  step: 1
+};
+const PRICES = { adult:21.50, conc:20.50, child:17.50, u3:0, aa:13.50, ac:9.50, acon:12.50, carer:8, wheelchair:0, pushchair:10, scooter:20, refill:5, breakfast:9.50, lunch:12, giraffe:175, lemur:65, polarbear:450, play:6.50, golf:5, photo:15 };
+const NAMES = { adult:'Adult Admission',conc:'Concession Admission',child:'Child Admission',u3:'Under 3 Admission',aa:'Accessible Adult',ac:'Accessible Child',acon:'Accessible Concession',carer:'Official Carer',wheelchair:'Wheelchair Hire',pushchair:'Pushchair Hire',scooter:'Mobility Scooter',refill:'Refill Cup',breakfast:'Breakfast Voucher',lunch:'Lunch Meal Deal',giraffe:'Giraffe Experience',lemur:'Lemur Experience',polarbear:'Polar Bear Experience',play:'Uproar Play Centre',golf:'Adventure Golf',photo:'Photo Package' };
+
+// =========================================================
+// NAVIGATION
+// =========================================================
+function go(s) {
+  B.step = s;
+  document.querySelectorAll('.sp').forEach(p => p.classList.remove('vis'));
+  document.getElementById('s'+s).classList.add('vis');
+  // stepper
+  const pcts = [0,0,16,32,50,68,85];
+  document.getElementById('stepper').style.setProperty('--prog', pcts[s]+'%');
+  document.querySelectorAll('.st').forEach(st => {
+    const n = +st.dataset.s;
+    st.classList.remove('active','done');
+    if (n === s) st.classList.add('active');
+    else if (n < s) st.classList.add('done');
+  });
+  if (s === 5) renderReview();
+  updateBasket();
+  window.scrollTo(0,0);
+}
+function goNext() {
+  if (B.step < 6) go(B.step + 1);
+}
+
+// =========================================================
+// CALENDAR
+// =========================================================
+let cYear = 2026, cMonth = 4; // May 2026 (0-indexed)
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const EVENTS = { '2026-5-1':1,'2026-5-2':1,'2026-5-3':1,'2026-5-25':1,'2026-8-7':1,'2026-8-8':1 };
+
+function cM(d) { cMonth += d; if(cMonth>11){cMonth=0;cYear++} if(cMonth<0){cMonth=11;cYear--} renderCal(); }
+
+function renderCal() {
+  document.getElementById('cMo').textContent = MONTHS[cMonth] + ' ' + cYear;
+  const g = document.getElementById('cG');
+  g.innerHTML = DAYS.map(d => '<div class="cdl">'+d+'</div>').join('');
+  const first = new Date(cYear, cMonth, 1);
+  let startDay = first.getDay() - 1; if (startDay < 0) startDay = 6;
+  const daysInMonth = new Date(cYear, cMonth+1, 0).getDate();
+  for (let i = 0; i < startDay; i++) g.innerHTML += '<div class="cd empty"></div>';
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dow = new Date(cYear, cMonth, d).getDay();
+    const isWE = dow === 0 || dow === 6;
+    const key = cYear+'-'+(cMonth+1)+'-'+d;
+    const isEvent = EVENTS[key];
+    const price = isWE ? '£24.99' : '£21.50';
+    const sel = B.date === key ? ' sel' : '';
+    let html = '<div class="cd'+sel+'" onclick="selDate('+d+')">';
+    html += '<span class="cdn">'+d+'</span><span class="cdp">'+price+'</span>';
+    if (isEvent) html += '<span class="cev"></span>';
+    html += '</div>';
+    g.innerHTML += html;
+  }
+}
+
+function selDate(d) {
+  B.date = cYear+'-'+(cMonth+1)+'-'+d;
+  renderCal();
+  const dow = new Date(cYear, cMonth, d).getDay();
+  const ds = document.getElementById('dSum');
+  ds.classList.add('vis');
+  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  document.getElementById('dSumT').textContent = dayNames[dow]+' '+d+' '+MONTHS[cMonth]+' '+cYear;
+  const isWE = dow===0||dow===6;
+  document.getElementById('dSumD').textContent = (isWE?'Off-peak weekend':'Off-peak weekday')+' — Park open 9:45am – 5pm.';
+  checkS1();
+}
+
+function selTime(el, t) {
+  B.time = t;
+  document.querySelectorAll('.ts').forEach(s => s.classList.remove('sel'));
+  el.classList.add('sel');
+  checkS1();
+}
+
+function checkS1() {
+  document.getElementById('s1n').disabled = !(B.date && B.time);
+  updateBasket();
+}
+
+// =========================================================
+// TICKETS
+// =========================================================
+function adj(id, d) {
+  B.tickets[id] = Math.max(0, B.tickets[id] + d);
+  document.getElementById('q-'+id).textContent = B.tickets[id];
+  const hasTickets = Object.values(B.tickets).some(v => v > 0);
+  document.getElementById('s2n').disabled = !hasTickets;
+  updateBasket();
+}
+function togAcc() {
+  const show = document.getElementById('accTog').checked;
+  document.getElementById('accGrp').classList.toggle('vis', show);
+}
+
+// =========================================================
+// EQUIPMENT
+// =========================================================
+function adjE(id, d) {
+  B.equipment[id] = Math.max(0, B.equipment[id] + d);
+  document.getElementById('eq-'+id).textContent = B.equipment[id];
+  updateBasket();
+}
+
+// =========================================================
+// ENHANCEMENTS
+// =========================================================
+function adjN(id, d) {
+  B.enhancements[id] = Math.max(0, B.enhancements[id] + d);
+  document.getElementById('en-'+id).textContent = B.enhancements[id];
+  updateBasket();
+}
+
+// =========================================================
+// BASKET
+// =========================================================
+function updateBasket() {
+  const bd = document.getElementById('sbBd');
+  const ft = document.getElementById('sbFt');
+  let lines = [];
+  let total = 0;
+
+  // Date/time
+  if (B.date && B.time) {
+    const p = B.date.split('-');
+    lines.push({ label: '📅 '+p[2]+'/'+p[1]+'/'+p[0]+' at '+B.time, amount: null });
+  }
+
+  // Tickets
+  for (const [k,v] of Object.entries(B.tickets)) {
+    if (v > 0) { const sub = v * PRICES[k]; total += sub; lines.push({ label: v+'× '+NAMES[k], amount: '£'+sub.toFixed(2) }); }
+  }
+  // Equipment
+  for (const [k,v] of Object.entries(B.equipment)) {
+    if (v > 0) { const sub = v * PRICES[k]; total += sub; lines.push({ label: v+'× '+NAMES[k], amount: sub > 0 ? '£'+sub.toFixed(2) : 'Free' }); }
+  }
+  // Enhancements
+  for (const [k,v] of Object.entries(B.enhancements)) {
+    if (v > 0) { const sub = v * PRICES[k]; total += sub; lines.push({ label: v+'× '+NAMES[k], amount: '£'+sub.toFixed(2) }); }
+  }
+
+  if (lines.length === 0 || (lines.length === 1 && lines[0].amount === null)) {
+    bd.innerHTML = '<div class="sb-empty">Your basket is empty.<br>Start by choosing a date.</div>';
+    ft.style.display = 'none';
+    return;
+  }
+
+  let h = '';
+  lines.forEach(l => {
+    if (l.amount === null) h += '<div class="sb-ln"><span class="sbi" style="font-weight:600;">'+l.label+'</span></div>';
+    else h += '<div class="sb-ln"><span class="sbi">'+l.label+'</span><span class="sba">'+l.amount+'</span></div>';
+  });
+
+  // Discount
+  const ticketCount = Object.values(B.tickets).reduce((a,b)=>a+b,0);
+  const discount = ticketCount * 3.50;
+  if (discount > 0) {
+    h += '<div class="sb-disc"><span>Online saving ('+ticketCount+' tickets)</span><span>−£'+discount.toFixed(2)+'</span></div>';
+    total -= discount;
+  }
+
+  h += '<div class="sb-tot"><span>Total</span><span>£'+total.toFixed(2)+'</span></div>';
+  bd.innerHTML = h;
+  ft.style.display = 'block';
+}
+
+// =========================================================
+// REVIEW (Step 5)
+// =========================================================
+function renderReview() {
+  let h = '';
+
+  // Date
+  if (B.date) {
+    const p = B.date.split('-');
+    h += '<div class="rv-section"><h4>Date &amp; Time <a href="#" onclick="go(1);return false">Edit</a></h4>';
+    h += '<div class="rv-line"><span class="rvl">'+p[2]+'/'+p[1]+'/'+p[0]+' at '+B.time+'</span><span class="rvv">—</span></div></div>';
+  }
+
+  // Tickets
+  const tLines = Object.entries(B.tickets).filter(([k,v])=>v>0);
+  if (tLines.length) {
+    h += '<div class="rv-section"><h4>Tickets <a href="#" onclick="go(2);return false">Edit</a></h4>';
+    let tTotal = 0;
+    tLines.forEach(([k,v]) => { const sub=v*PRICES[k]; tTotal+=sub; h+='<div class="rv-line"><span class="rvl">'+v+'× '+NAMES[k]+'</span><span class="rvv">£'+sub.toFixed(2)+'</span></div>'; });
+    h += '</div>';
+  }
+
+  // Equipment
+  const eLines = Object.entries(B.equipment).filter(([k,v])=>v>0);
+  if (eLines.length) {
+    h += '<div class="rv-section"><h4>Equipment <a href="#" onclick="go(3);return false">Edit</a></h4>';
+    eLines.forEach(([k,v]) => { const sub=v*PRICES[k]; h+='<div class="rv-line"><span class="rvl">'+v+'× '+NAMES[k]+'</span><span class="rvv">'+(sub>0?'£'+sub.toFixed(2):'Free')+'</span></div>'; });
+    h += '</div>';
+  }
+
+  // Enhancements
+  const nLines = Object.entries(B.enhancements).filter(([k,v])=>v>0);
+  if (nLines.length) {
+    h += '<div class="rv-section"><h4>Enhancements <a href="#" onclick="go(4);return false">Edit</a></h4>';
+    nLines.forEach(([k,v]) => { const sub=v*PRICES[k]; h+='<div class="rv-line"><span class="rvl">'+v+'× '+NAMES[k]+'</span><span class="rvv">£'+sub.toFixed(2)+'</span></div>'; });
+    h += '</div>';
+  }
+
+  // Total
+  let total = 0;
+  for (const [k,v] of Object.entries(B.tickets)) total += v * PRICES[k];
+  for (const [k,v] of Object.entries(B.equipment)) total += v * PRICES[k];
+  for (const [k,v] of Object.entries(B.enhancements)) total += v * PRICES[k];
+  const ticketCount = Object.values(B.tickets).reduce((a,b)=>a+b,0);
+  const discount = ticketCount * 3.50;
+  if (discount > 0) {
+    h += '<div class="rv-line discount" style="color:var(--ywp-orange);font-weight:600;padding:8px 0;"><span class="rvl">Online booking discount ('+ticketCount+' tickets)</span><span class="rvv">−£'+discount.toFixed(2)+'</span></div>';
+    total -= discount;
+  }
+  h += '<div class="rv-total"><span>Total</span><span>£'+total.toFixed(2)+'</span></div>';
+
+  document.getElementById('reviewContent').innerHTML = h;
+}
+
+// Init
+renderCal();
+</script>
 </body>
 </html>
