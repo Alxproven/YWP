@@ -649,6 +649,7 @@ section.content.alt { background: var(--ywp-cream); }
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
+  flex-shrink: 0;
 }
 .booking-option-card h3 {
   font-family: var(--font-display);
@@ -658,12 +659,17 @@ section.content.alt { background: var(--ywp-cream); }
   letter-spacing: 0.03em;
   color: var(--ywp-green-900);
   margin: 0 20px 8px;
+  min-height: 2.6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .booking-option-card p {
   color: var(--ywp-muted);
   font-size: 0.9rem;
   margin: 0 20px 14px;
   line-height: 1.45;
+  flex: 1;
 }
 .bo-divider {
   width: 40px;
@@ -678,11 +684,10 @@ section.content.alt { background: var(--ywp-cream); }
   background-position: center;
   margin: 0 20px;
   border-radius: var(--radius-md);
-  opacity: 0.4;
 }
 .bo-btn {
   display: block;
-  margin: 16px 20px 24px;
+  margin: auto 20px 24px;
   background: var(--ywp-green-900);
   color: #fff;
   padding: 12px 20px;
@@ -731,9 +736,9 @@ section.content.alt { background: var(--ywp-cream); }
 .feature-card-overlay {
   position: relative;
   z-index: 1;
-  background: linear-gradient(0deg, rgba(13,59,31,0.92) 0%, rgba(13,59,31,0.6) 60%, transparent 100%);
+  background: linear-gradient(0deg, rgba(13,59,31,0.95) 0%, rgba(13,59,31,0.75) 50%, rgba(13,59,31,0.2) 100%);
   width: 100%;
-  padding: 30px 24px 24px;
+  padding: 80px 24px 24px;
   color: #fff;
 }
 .feature-card-icon {
@@ -821,13 +826,69 @@ section.content.alt { background: var(--ywp-cream); }
   letter-spacing: 0.04em;
 }
 
+/* ---------- Testimonials ---------- */
+.testimonials {
+  background: var(--ywp-green-900);
+  padding: 60px 0;
+  color: #fff;
+}
+.testimonials .section-head {
+  margin-bottom: 30px;
+}
+.testimonials .eyebrow {
+  color: var(--ywp-yellow);
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.testimonial-card {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+.testimonial-stars {
+  color: var(--ywp-yellow);
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+.testimonial-quote {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.9);
+  font-style: italic;
+  flex: 1;
+  margin-bottom: 16px;
+}
+.testimonial-author {
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 12px;
+}
+.testimonial-author strong {
+  display: block;
+  font-size: 0.9rem;
+  color: #fff;
+  margin-bottom: 2px;
+}
+.testimonial-author span {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.55);
+}
+
 /* ---------- v3 responsive ---------- */
 @media (max-width: 900px) {
   .booking-options-grid { grid-template-columns: repeat(2, 1fr); }
   .feature-cards-grid { grid-template-columns: 1fr; }
   .info-strip { grid-template-columns: repeat(2, 1fr); }
+  .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 600px) {
   .booking-options-grid { grid-template-columns: 1fr; }
   .info-strip { grid-template-columns: 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr; }
 }
