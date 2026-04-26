@@ -196,7 +196,7 @@ img { max-width: 100%; display: block; }
 .info-tile p { font-size: 0.9rem; opacity: 0.9; }
 
 /* ---------- Section ---------- */
-section.content { padding: 70px 0; }
+section.content { padding: 80px 0; }
 section.content.alt { background: var(--ywp-cream); }
 
 .section-head { text-align: center; max-width: 700px; margin: 0 auto 40px; }
@@ -622,7 +622,7 @@ section.content.alt { background: var(--ywp-cream); }
 .booking-options-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 30px;
 }
 .booking-option-card {
   background: #fff;
@@ -641,7 +641,7 @@ section.content.alt { background: var(--ywp-cream); }
 .bo-icon {
   width: 60px;
   height: 60px;
-  margin: 28px auto 14px;
+  margin: 32px auto 16px;
   background: var(--ywp-cream);
   border: 2px solid var(--ywp-green-700);
   border-radius: 50%;
@@ -658,7 +658,7 @@ section.content.alt { background: var(--ywp-cream); }
   text-transform: uppercase;
   letter-spacing: 0.03em;
   color: var(--ywp-green-900);
-  margin: 0 20px 8px;
+  margin: 0 24px 10px;
   min-height: 2.6em;
   display: flex;
   align-items: center;
@@ -667,7 +667,7 @@ section.content.alt { background: var(--ywp-cream); }
 .booking-option-card p {
   color: var(--ywp-muted);
   font-size: 0.9rem;
-  margin: 0 20px 14px;
+  margin: 0 24px 18px;
   line-height: 1.45;
   flex: 1;
 }
@@ -675,22 +675,22 @@ section.content.alt { background: var(--ywp-cream); }
   width: 40px;
   height: 3px;
   background: var(--ywp-orange);
-  margin: 0 auto 16px;
+  margin: 0 auto 20px;
   border-radius: 2px;
 }
 .bo-img {
-  height: 120px;
+  height: 140px;
   background-size: cover;
   background-position: center;
-  margin: 0 20px;
+  margin: 0 24px;
   border-radius: var(--radius-md);
 }
 .bo-btn {
   display: block;
-  margin: auto 20px 24px;
+  margin: 18px 24px 28px;
   background: var(--ywp-green-900);
   color: #fff;
-  padding: 12px 20px;
+  padding: 14px 20px;
   border-radius: var(--radius-sm);
   font-weight: 700;
   font-size: 0.85rem;
@@ -708,7 +708,7 @@ section.content.alt { background: var(--ywp-cream); }
 .feature-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 30px;
 }
 .feature-card {
   position: relative;
@@ -771,12 +771,12 @@ section.content.alt { background: var(--ywp-cream); }
   font-style: italic;
   font-size: clamp(1.4rem, 3vw, 2rem);
   color: var(--ywp-green-900);
-  margin-bottom: 30px;
+  margin-bottom: 36px;
 }
 .info-strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 24px;
 }
 .info-strip-card {
   background: #fff;
@@ -829,7 +829,7 @@ section.content.alt { background: var(--ywp-cream); }
 /* ---------- Testimonials ---------- */
 .testimonials {
   background: var(--ywp-green-900);
-  padding: 60px 0;
+  padding: 70px 0;
   color: #fff;
 }
 .testimonials .section-head {
