@@ -1,10 +1,8 @@
-# Yorkshire Wildlife Park — Replica Site
+Yorkshire Wildlife Park — Replica Site
 
-A plain HTML/CSS/JS replica of **yorkshirewildlifepark.com** built as a sandbox for experimenting with UX improvements identified in the March 2026 WebUsability report.
+Plain HTML/CSS/JS replica of **yorkshirewildlifepark.com** built as a sandbox for experimenting with UX improvements identified in the March 2026 WebUsability report.
 
-## Running it
-
-No build step, no dependencies. Just open `index.html` in a browser, or serve the folder with any static server:
+Just open `index.html` in a browser, or serve the folder with any static server:
 
 ```bash
 # from this folder
@@ -16,13 +14,13 @@ python3 -m http.server 8000
 
 | File | Purpose | UX report area |
 |---|---|---|
-| `index.html` | Homepage — hero, info tiles, card grid | Entry & first impressions |
-| `tickets.html` | Ticket prices page with peak/off-peak/winter/summer tabs | Pricing clarity (the messy table) |
-| `booking.html` | Booking flow — ticket selection + basket | Booking process & checkout |
-| `experiences.html` | Animal experiences grouped by Platinum → Bronze tier | Upsells & experience integration |
-| `explore.html` | Explore section landing | Navigation & findability |
-| `plan.html` | Plan your visit (parking, directions, access) | Planning info findability |
-| `short-breaks.html` | Hex hotel packages | Short breaks journey |
+| `index.html` | Homepage — hero, info tiles, card grid 
+| `tickets.html` | Ticket prices page with peak/off-peak/winter/summer tabs 
+| `booking.html` | Booking flow — ticket selection + basket 
+| `experiences.html` | Animal experiences grouped by Platinum → Bronze tier 
+| `explore.html` | Explore section landing 
+| `plan.html` | Plan your visit (parking, directions, access) 
+| `short-breaks.html` | Hex hotel packages 
 
 ## File structure
 
@@ -67,7 +65,7 @@ From the UX report — these issues are reproduced so you can fix and test again
 5. **Quantity +/− controls only**, no type-a-number input — painful for families/groups.
 6. **Animal Experiences sitting under Tickets & Passes** — testers expected them under Explore or What's On.
 
-## Suggested experiments
+# Suggested experiments
 
 - **Booking model v2**: Restructure `booking.html` into packaged paths (Tickets only / Tickets + Stay / Tickets + Stay + Experience).
 - **Simplified pricing**: Replace the `tickets.html` table with 1 price × member/non-member toggle.
