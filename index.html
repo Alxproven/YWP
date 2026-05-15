@@ -1,401 +1,240 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Yorkshire Wildlife Park</title>
-  <link rel="stylesheet" href="css/styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Yorkshire Wildlife Park — Replica</title>
+<link rel="stylesheet" href="css/styles.css">
 </head>
-
 <body>
-  <div class="top-strip">
-    <div class="container">
-      <p class="opening-times">
-        <span aria-hidden="true">●</span>
-        Open today: 9:45am – 5pm · Last entry 3pm
-      </p>
 
-      <nav class="utility-nav" aria-label="Useful links">
-        <a href="#">Accessibility</a>
-        <a href="#">School Trips</a>
-        <a href="#">Venue Hire</a>
-      </nav>
+<div class="replica-banner"><strong>REPLICA v3</strong> — Homepage redesign based on visual mockup.</div>
+
+<div class="top-strip">
+  <div class="container">
+    <span class="open-now">● Open today: 9:45am – 5pm &nbsp;·&nbsp; Last entry 3pm</span>
+    <span>
+      <a href="#">Accessibility</a> &nbsp;·&nbsp;
+      <a href="#">School Trips</a> &nbsp;·&nbsp;
+      <a href="#">Venue Hire</a>
+    </span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <img src="https://www.yorkshirewildlifepark.com/media/x43p1ox4/ywp-primary-logo.svg" alt="Yorkshire Wildlife Park" class="logo-img">
+    </a>
+    <nav class="main-nav" id="main-nav">
+      <a href="explore.html">Explore the Park</a>
+      <a href="tickets.html">Prices</a>
+      <a href="short-breaks.html">Stay With Us</a>
+      <a href="#">What's On</a>
+      <a href="plan.html">Plan Your Visit</a>
+    </nav>
+    <a href="booking.html" class="btn btn-primary btn-sm">Book Now</a>
+    <button class="mobile-toggle" aria-label="Menu" onclick="document.getElementById('main-nav').classList.toggle('open')">☰</button>
+  </div>
+</header>
+
+
+<section class="hero">
+  <div class="container">
+    <h1>The UK's No.1 Walk-Through Wildlife Adventure</h1>
+    <p class="tagline">400+ animals · 70 species · 150 acres of wild adventure in South Yorkshire</p>
+    <div class="hero-ctas">
+      <a href="booking.html" class="btn btn-primary btn-lg">Book your visit</a>
+      <a href="explore.html" class="btn btn-ghost btn-lg">See what's here</a>
     </div>
   </div>
+</section>
 
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="index.html" class="logo" aria-label="Yorkshire Wildlife Park home">
-        <img
-          src="https://www.yorkshirewildlifepark.com/media/x43p1ox4/ywp-primary-logo.svg"
-          alt="Yorkshire Wildlife Park"
-          class="logo-img"
-        >
+
+<section class="key-facts">
+  <div class="container">
+    <div class="fact">
+      <span class="fact-icon">🅿️</span>
+      <div><strong>Free parking</strong><span>Included with every ticket</span></div>
+    </div>
+    <div class="fact">
+      <span class="fact-icon">🕐</span>
+      <div><strong>Allow 5–6 hours</strong><span>A full day out for the family</span></div>
+    </div>
+    <div class="fact">
+      <span class="fact-icon">🎠</span>
+      <div><strong>Play areas included</strong><span>6 indoor &amp; outdoor play zones</span></div>
+    </div>
+    <div class="fact">
+      <span class="fact-icon">🐾</span>
+      <div><strong>Talks &amp; feeds daily</strong><span>Ranger talks included free</span></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="content">
+  <div class="container">
+    <div class="booking-options-grid">
+
+      <div class="booking-option-card">
+        <div class="bo-icon">🐾</div>
+        <h3>1. Day Tickets</h3>
+        <p>Single-day park entry for your chosen visit date.</p>
+        <div class="bo-divider"></div>
+        <div class="bo-img" style="background-image:url('https://www.yorkshirewildlifepark.com/media/s0nf1svi/better-vista.jpg');"></div>
+        <a href="booking.html" class="btn bo-btn">Book Day Tickets →</a>
+      </div>
+
+      <div class="booking-option-card">
+        <div class="bo-icon">🎫</div>
+        <h3>2. Multi-Day Tickets</h3>
+        <p>Make more of your visit with flexible multi-day entry.</p>
+        <div class="bo-divider"></div>
+        <div class="bo-img" style="background-image:url('https://www.yorkshirewildlifepark.com/media/0mpiyele/family-entering-ywp.jpg');"></div>
+        <a href="booking.html" class="btn bo-btn">View Multi-Day Options →</a>
+      </div>
+
+      <div class="booking-option-card">
+        <div class="bo-icon">🐾</div>
+        <h3>3. Unlimited Tickets / Membership</h3>
+        <p>Visit again and again with annual membership options.</p>
+        <div class="bo-divider"></div>
+        <div class="bo-img" style="background-image:url('https://www.yorkshirewildlifepark.com/media/ey4ndnwn/dsc04954-2.jpg');"></div>
+        <a href="#" class="btn bo-btn">Explore Memberships →</a>
+      </div>
+
+      <div class="booking-option-card">
+        <div class="bo-icon">⭐</div>
+        <h3>4. Experiences With Day Ticket</h3>
+        <p>Add an animal experience to your park admission.</p>
+        <div class="bo-divider"></div>
+        <div class="bo-img" style="background-image:url('https://www.yorkshirewildlifepark.com/media/tj0fab3y/ywp-images-3207.jpg');"></div>
+        <a href="experiences.html" class="btn bo-btn">View Experiences →</a>
+      </div>
+
+      <div class="booking-option-card">
+        <div class="bo-icon">🎪</div>
+        <h3>5. Events With Day Tickets</h3>
+        <p>Discover seasonal events and special park days.</p>
+        <div class="bo-divider"></div>
+        <div class="bo-img" style="background-image:url('https://www.yorkshirewildlifepark.com/media/ktldeo01/wild-live-2026-background.jpg');"></div>
+        <a href="#" class="btn bo-btn">See Events →</a>
+      </div>
+
+      <div class="booking-option-card">
+        <div class="bo-icon">🏨</div>
+        <h3>6. Hotel Stays</h3>
+        <p>Turn your visit into a short break at Hex Hotel.</p>
+        <div class="bo-divider"></div>
+        <div class="bo-img" style="background-image:url('https://www.yorkshirewildlifepark.com/media/pyknnd5c/dsc_3728-hex-wildlife.jpg');"></div>
+        <a href="short-breaks.html" class="btn bo-btn">Book A Stay →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="content" style="padding-top:0;">
+  <div class="container">
+    <div class="feature-cards-grid">
+
+      <a href="#" class="feature-card">
+        <div class="feature-card-bg" style="background-image:url('https://www.yorkshirewildlifepark.com/media/1afbctds/2023-project-polar-1-dr-ywp-13.jpg');"></div>
+        <div class="feature-card-overlay">
+          <div class="feature-card-icon">🌿</div>
+          <h3>Conservation</h3>
+          <p>Learn how your visit helps protect wildlife.</p>
+          <span class="btn bo-btn">Find Out More →</span>
+        </div>
       </a>
 
-      <nav class="main-nav" id="main-nav" aria-label="Main navigation">
-        <a href="explore.html">Explore the Park</a>
-        <a href="tickets.html">Prices</a>
-        <a href="short-breaks.html">Stay With Us</a>
-        <a href="#">What's On</a>
-        <a href="plan.html">Plan Your Visit</a>
-      </nav>
+      <a href="explore.html" class="feature-card">
+        <div class="feature-card-bg" style="background-image:url('https://www.yorkshirewildlifepark.com/media/mmroe2hb/2025-land-of-the-tiger-altai-dr-ywp-78.jpg');"></div>
+        <div class="feature-card-overlay">
+          <div class="feature-card-icon">🐾</div>
+          <h3>Animals</h3>
+          <p>Meet incredible species from around the world.</p>
+          <span class="btn bo-btn">Explore Animals →</span>
+        </div>
+      </a>
 
-      <a href="booking.html" class="btn btn-primary btn-sm">Book Now</a>
+      <a href="plan.html" class="feature-card">
+        <div class="feature-card-bg" style="background-image:url('https://www.yorkshirewildlifepark.com/media/px0isaks/oasis-adventure-play-zip-wire.jpg');"></div>
+        <div class="feature-card-overlay">
+          <div class="feature-card-icon">👨‍👩‍👧‍👦</div>
+          <h3>Days Out With Kids</h3>
+          <p>Plan a fun, family-friendly day at the park.</p>
+          <span class="btn bo-btn">Plan Your Day →</span>
+        </div>
+      </a>
 
-      <button
-        class="mobile-toggle"
-        type="button"
-        aria-label="Open menu"
-        aria-controls="main-nav"
-        aria-expanded="false"
-      >
-        ☰
-      </button>
     </div>
-  </header>
+  </div>
+</section>
 
-  <main>
-    <section class="hero">
-      <div class="container">
-        <h1>The UK's No.1 Walk-Through Wildlife Adventure</h1>
-        <p class="tagline">
-          400+ animals · 70 species · 150 acres of wild adventure in South Yorkshire
-        </p>
 
-        <div class="hero-ctas">
-          <a href="booking.html" class="btn btn-primary btn-lg">Book your visit</a>
-          <a href="explore.html" class="btn btn-ghost btn-lg">See what's here</a>
+<section class="content alt">
+  <div class="container">
+    <h2 class="info-strip-title">Everything You Need To Know For Your Visit</h2>
+    <div class="info-strip">
+
+      <a href="plan.html" class="info-strip-card">
+        <div class="info-strip-icon">📍</div>
+        <div>
+          <h4>Getting Here</h4>
+          <p>Plan your journey to the park with our travel information and directions.</p>
+          <span class="info-strip-link">Find Out More →</span>
         </div>
-      </div>
-    </section>
+      </a>
 
-    <section class="key-facts" aria-label="Visitor information">
-      <div class="container">
-        <article class="fact">
-          <span class="fact-icon" aria-hidden="true">🅿️</span>
-          <div>
-            <h2>Free parking</h2>
-            <p>Included with every ticket</p>
-          </div>
-        </article>
-
-        <article class="fact">
-          <span class="fact-icon" aria-hidden="true">🕐</span>
-          <div>
-            <h2>Allow 5–6 hours</h2>
-            <p>A full day out for the family</p>
-          </div>
-        </article>
-
-        <article class="fact">
-          <span class="fact-icon" aria-hidden="true">🎠</span>
-          <div>
-            <h2>Play areas included</h2>
-            <p>6 indoor and outdoor play zones</p>
-          </div>
-        </article>
-
-        <article class="fact">
-          <span class="fact-icon" aria-hidden="true">🐾</span>
-          <div>
-            <h2>Talks and feeds daily</h2>
-            <p>Ranger talks included free</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="content booking-options">
-      <div class="container">
-        <div class="booking-options-grid">
-          <article class="booking-option-card">
-            <div class="bo-icon" aria-hidden="true">🐾</div>
-            <h2>Day Tickets</h2>
-            <p>Single-day park entry for your chosen visit date.</p>
-            <div class="bo-divider"></div>
-            <div
-              class="bo-img"
-              style="background-image: url('https://www.yorkshirewildlifepark.com/media/s0nf1svi/better-vista.jpg');"
-              role="img"
-              aria-label="View across Yorkshire Wildlife Park"
-            ></div>
-            <a href="booking.html" class="btn bo-btn">Book Day Tickets →</a>
-          </article>
-
-          <article class="booking-option-card">
-            <div class="bo-icon" aria-hidden="true">🎫</div>
-            <h2>Multi-Day Tickets</h2>
-            <p>Make more of your visit with flexible multi-day entry.</p>
-            <div class="bo-divider"></div>
-            <div
-              class="bo-img"
-              style="background-image: url('https://www.yorkshirewildlifepark.com/media/0mpiyele/family-entering-ywp.jpg');"
-              role="img"
-              aria-label="Family entering Yorkshire Wildlife Park"
-            ></div>
-            <a href="booking.html" class="btn bo-btn">View Multi-Day Options →</a>
-          </article>
-
-          <article class="booking-option-card">
-            <div class="bo-icon" aria-hidden="true">🐾</div>
-            <h2>Membership</h2>
-            <p>Visit again and again with annual membership options.</p>
-            <div class="bo-divider"></div>
-            <div
-              class="bo-img"
-              style="background-image: url('https://www.yorkshirewildlifepark.com/media/ey4ndnwn/dsc04954-2.jpg');"
-              role="img"
-              aria-label="Visitors at Yorkshire Wildlife Park"
-            ></div>
-            <a href="#" class="btn bo-btn">Explore Memberships →</a>
-          </article>
-
-          <article class="booking-option-card">
-            <div class="bo-icon" aria-hidden="true">⭐</div>
-            <h2>Animal Experiences</h2>
-            <p>Add an animal experience to your park admission.</p>
-            <div class="bo-divider"></div>
-            <div
-              class="bo-img"
-              style="background-image: url('https://www.yorkshirewildlifepark.com/media/tj0fab3y/ywp-images-3207.jpg');"
-              role="img"
-              aria-label="Animal experience at Yorkshire Wildlife Park"
-            ></div>
-            <a href="experiences.html" class="btn bo-btn">View Experiences →</a>
-          </article>
-
-          <article class="booking-option-card">
-            <div class="bo-icon" aria-hidden="true">🎪</div>
-            <h2>Events</h2>
-            <p>Discover seasonal events and special park days.</p>
-            <div class="bo-divider"></div>
-            <div
-              class="bo-img"
-              style="background-image: url('https://www.yorkshirewildlifepark.com/media/ktldeo01/wild-live-2026-background.jpg');"
-              role="img"
-              aria-label="Live event at Yorkshire Wildlife Park"
-            ></div>
-            <a href="#" class="btn bo-btn">See Events →</a>
-          </article>
-
-          <article class="booking-option-card">
-            <div class="bo-icon" aria-hidden="true">🏨</div>
-            <h2>Hotel Stays</h2>
-            <p>Turn your visit into a short break at Hex Hotel.</p>
-            <div class="bo-divider"></div>
-            <div
-              class="bo-img"
-              style="background-image: url('https://www.yorkshirewildlifepark.com/media/pyknnd5c/dsc_3728-hex-wildlife.jpg');"
-              role="img"
-              aria-label="Hex Hotel at Yorkshire Wildlife Park"
-            ></div>
-            <a href="short-breaks.html" class="btn bo-btn">Book A Stay →</a>
-          </article>
+      <a href="plan.html" class="info-strip-card">
+        <div class="info-strip-icon">🍽️</div>
+        <div>
+          <h4>Food &amp; Drink</h4>
+          <p>From quick bites to relaxing meals, there's something for everyone.</p>
+          <span class="info-strip-link">Explore Options →</span>
         </div>
-      </div>
-    </section>
+      </a>
 
-    <section class="testimonials">
-      <div class="container">
-        <header class="section-head">
-          <p class="eyebrow">What our visitors say</p>
-          <h2>Recent visitor reviews</h2>
-        </header>
-
-        <div class="testimonials-grid">
-          <article class="testimonial-card">
-            <div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div>
-            <blockquote>
-              “Absolutely incredible day out. The kids didn't want to leave! The polar bear reserve alone is worth the trip — we've never seen anything like it in the UK.”
-            </blockquote>
-            <p class="testimonial-author">
-              <strong>Sarah M.</strong>
-              <span>Family of 4, visited April 2026</span>
-            </p>
-          </article>
-
-          <article class="testimonial-card">
-            <div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div>
-            <blockquote>
-              “We booked the giraffe experience as a surprise for my partner's birthday. Feeding them by hand with a keeper was genuinely magical.”
-            </blockquote>
-            <p class="testimonial-author">
-              <strong>James &amp; Priya T.</strong>
-              <span>Couple, visited March 2026</span>
-            </p>
-          </article>
-
-          <article class="testimonial-card">
-            <div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div>
-            <blockquote>
-              “We stayed overnight at the Hex Hotel and it made the whole trip so much more relaxed. Brilliant for young kids.”
-            </blockquote>
-            <p class="testimonial-author">
-              <strong>Rachel D.</strong>
-              <span>Family of 5, visited February 2026</span>
-            </p>
-          </article>
-
-          <article class="testimonial-card">
-            <div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div>
-            <blockquote>
-              “Better than any zoo I've been to. The animals have so much space and you can tell they're well looked after.”
-            </blockquote>
-            <p class="testimonial-author">
-              <strong>Mark &amp; Linda W.</strong>
-              <span>Couple, visited January 2026</span>
-            </p>
-          </article>
+      <a href="plan.html" class="info-strip-card">
+        <div class="info-strip-icon">♿</div>
+        <div>
+          <h4>Accessibility</h4>
+          <p>Information to help you plan a comfortable and enjoyable visit.</p>
+          <span class="info-strip-link">View Accessibility →</span>
         </div>
-      </div>
-    </section>
+      </a>
 
-    <section class="content highlights">
-      <div class="container">
-        <div class="feature-cards-grid">
-          <a href="#" class="feature-card">
-            <div
-              class="feature-card-bg"
-              style="background-image: url('https://www.yorkshirewildlifepark.com/media/1afbctds/2023-project-polar-1-dr-ywp-13.jpg');"
-            ></div>
-            <div class="feature-card-overlay">
-              <span class="feature-card-icon" aria-hidden="true">🌿</span>
-              <h2>Conservation</h2>
-              <p>Learn how your visit helps protect wildlife.</p>
-              <span class="btn bo-btn">Find Out More →</span>
-            </div>
-          </a>
-
-          <a href="explore.html" class="feature-card">
-            <div
-              class="feature-card-bg"
-              style="background-image: url('https://www.yorkshirewildlifepark.com/media/mmroe2hb/2025-land-of-the-tiger-altai-dr-ywp-78.jpg');"
-            ></div>
-            <div class="feature-card-overlay">
-              <span class="feature-card-icon" aria-hidden="true">🐾</span>
-              <h2>Animals</h2>
-              <p>Meet incredible species from around the world.</p>
-              <span class="btn bo-btn">Explore Animals →</span>
-            </div>
-          </a>
-
-          <a href="plan.html" class="feature-card">
-            <div
-              class="feature-card-bg"
-              style="background-image: url('https://www.yorkshirewildlifepark.com/media/px0isaks/oasis-adventure-play-zip-wire.jpg');"
-            ></div>
-            <div class="feature-card-overlay">
-              <span class="feature-card-icon" aria-hidden="true">👨‍👩‍👧‍👦</span>
-              <h2>Days Out With Kids</h2>
-              <p>Plan a fun, family-friendly day at the park.</p>
-              <span class="btn bo-btn">Plan Your Day →</span>
-            </div>
-          </a>
+      <a href="plan.html" class="info-strip-card">
+        <div class="info-strip-icon">🕐</div>
+        <div>
+          <h4>Opening Times</h4>
+          <p>Check opening times and plan your visit.</p>
+          <span class="info-strip-link">View Opening Times →</span>
         </div>
-      </div>
-    </section>
+      </a>
 
-    <section class="content alt visit-info">
-      <div class="container">
-        <h2 class="info-strip-title">Everything You Need To Know For Your Visit</h2>
-
-        <div class="info-strip">
-          <a href="plan.html" class="info-strip-card">
-            <span class="info-strip-icon" aria-hidden="true">📍</span>
-            <div>
-              <h3>Getting Here</h3>
-              <p>Plan your journey to the park with travel information and directions.</p>
-              <span class="info-strip-link">Find Out More →</span>
-            </div>
-          </a>
-
-          <a href="plan.html" class="info-strip-card">
-            <span class="info-strip-icon" aria-hidden="true">🍽️</span>
-            <div>
-              <h3>Food &amp; Drink</h3>
-              <p>From quick bites to relaxing meals, there's something for everyone.</p>
-              <span class="info-strip-link">Explore Options →</span>
-            </div>
-          </a>
-
-          <a href="plan.html" class="info-strip-card">
-            <span class="info-strip-icon" aria-hidden="true">♿</span>
-            <div>
-              <h3>Accessibility</h3>
-              <p>Information to help you plan a comfortable and enjoyable visit.</p>
-              <span class="info-strip-link">View Accessibility →</span>
-            </div>
-          </a>
-
-          <a href="plan.html" class="info-strip-card">
-            <span class="info-strip-icon" aria-hidden="true">🕐</span>
-            <div>
-              <h3>Opening Times</h3>
-              <p>Check opening times before you travel.</p>
-              <span class="info-strip-link">View Opening Times →</span>
-            </div>
-          </a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-about">
-          <img
-            src="https://www.yorkshirewildlifepark.com/media/x43p1ox4/ywp-primary-logo.svg"
-            alt="Yorkshire Wildlife Park"
-            class="footer-logo"
-          >
-          <p>
-            The UK's no.1 walk-through wildlife adventure with conservation at its heart.
-            Based in Doncaster, South Yorkshire.
-          </p>
-        </div>
-
-        <nav aria-label="Visit links">
-          <h2>Visit</h2>
-          <ul>
-            <li><a href="plan.html">Opening times</a></li>
-            <li><a href="plan.html">Directions and parking</a></li>
-            <li><a href="tickets.html">Ticket prices</a></li>
-            <li><a href="plan.html">Accessibility</a></li>
-            <li><a href="#">FAQs</a></li>
-          </ul>
-        </nav>
-
-        <nav aria-label="Explore links">
-          <h2>Explore</h2>
-          <ul>
-            <li><a href="explore.html">Animals</a></li>
-            <li><a href="experiences.html">Animal Experiences</a></li>
-            <li><a href="#">What's On</a></li>
-            <li><a href="short-breaks.html">Hex Hotel</a></li>
-            <li><a href="#">Conservation</a></li>
-          </ul>
-        </nav>
-
-        <nav aria-label="Support links">
-          <h2>Support</h2>
-          <ul>
-            <li><a href="#">Help and FAQs</a></li>
-            <li><a href="#">Contact us</a></li>
-            <li><a href="#">Privacy</a></li>
-            <li><a href="#">Terms and conditions</a></li>
-            <li><a href="#">Careers</a></li>
-          </ul>
-        </nav>
-      </div>
-
-      <p class="copyright">
-        © 2026 Yorkshire Wildlife Park
-      </p>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script src="js/main.js"></script>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <img src="https://www.yorkshirewildlifepark.com/media/x43p1ox4/ywp-primary-logo.svg" alt="Yorkshire Wildlife Park" style="height:50px;margin-bottom:12px;filter:brightness(10);">
+        <p style="margin-top:4px;font-size:0.9rem;max-width:360px;">The UK's no.1 walk-through wildlife adventure with conservation at its heart. Based in Doncaster, South Yorkshire.</p>
+      </div>
+      <div><h4>Visit</h4><ul><li><a href="plan.html">Opening times</a></li><li><a href="plan.html">Directions &amp; parking</a></li><li><a href="tickets.html">Ticket prices</a></li><li><a href="plan.html">Accessibility</a></li><li><a href="#">FAQs</a></li></ul></div>
+      <div><h4>Explore</h4><ul><li><a href="explore.html">Animals</a></li><li><a href="experiences.html">Animal Experiences</a></li><li><a href="#">What's On</a></li><li><a href="short-breaks.html">Hex Hotel</a></li><li><a href="#">Conservation</a></li></ul></div>
+      <div><h4>Support</h4><ul><li><a href="#">Help &amp; FAQs</a></li><li><a href="#">Contact us</a></li><li><a href="#">Privacy</a></li><li><a href="#">T&amp;Cs</a></li><li><a href="#">Careers</a></li></ul></div>
+    </div>
+    <div class="copyright">© 2026 Yorkshire Wildlife Park — <em>Replica site for UX testing only</em></div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
 </body>
 </html>
